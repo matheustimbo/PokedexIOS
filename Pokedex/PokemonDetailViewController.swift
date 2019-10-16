@@ -63,8 +63,7 @@ import AlamofireImage
             
             
             let types = json["types"] as? [[String: AnyObject]]
-            for type in types!{
-                self.pokeTypes.append(type["type"]?["name"] as! String)
+            for type in types!{ self.pokeTypes.append(type["type"]?["name"] as! String)
             }
             
         

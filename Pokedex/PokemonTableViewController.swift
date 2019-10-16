@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+import Alamofire
+import AlamofireImage
 
 class PokemonTableViewController: UITableViewController {
     
@@ -22,6 +23,7 @@ class PokemonTableViewController: UITableViewController {
         pokemonList.append(Pokemontest)
         pokemonList.append(Pokemontest)*/
         parseJSON(url:"https://pokeapi.co/api/v2/pokemon/");
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -55,15 +57,16 @@ class PokemonTableViewController: UITableViewController {
             
             let pokemons = json["results"] as? [[String: AnyObject]]
             for pokemon in pokemons!{
-                print(pokemon)
+                
                 let pokemonAux = Pokemon(nome: pokemon["name"] as! String, fotoUrl: pokemon["url"] as! String, tipos: [""], movimentos: [""])
-                print(pokemonAux)
+                
                 self.pokemonList.append(pokemonAux)
             }
             
 
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                self.setPokemonsImages();
             }
             
             /*if let nextUrl = json["next"] as? String {
@@ -84,6 +87,52 @@ class PokemonTableViewController: UITableViewController {
         task.resume()
 
     }
+    
+    func setPokemonsImages(){
+        for pokemon in self.pokemonList{
+            print("teste")
+            print(pokemon.fotoUrl)
+            var urlPokemon = pokemon.fotoUrl
+            let url = URL(string: urlPokemon)
+            let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
+
+                guard error == nil else {
+                    print("returning error")
+                    return
+                }
+
+                guard let content = data else {
+                    print("not returning data")
+                    return
+                }
+
+
+                guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String:    Any] else {
+                    print("Not containing JSON")
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    
+                    if let sprites = json["sprites"] as? [String: String?] {
+                        print(sprites["front_default"]!!)
+                        Alamofire.request(sprites["front_default"]!!).responseImage { response in
+                            if let image = response.result.value {
+                                print("image downloaded: \(image)")
+                                //self.pokeimage.image = image
+                                pokemon.foto = image
+                                self.tableView.reloadData()
+                            }
+                        }
+                    }
+                    
+                    
+                }
+            }
+            task.resume()
+        }
+        
+    }
 
     
 
@@ -102,7 +151,8 @@ class PokemonTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "minha_celula", for: indexPath)
         let pokemon = self.pokemonList[indexPath.row]
         cell.textLabel?.text = pokemon.nome
-        cell.imageView!.image = UIImage(named: "Pikachu")
+        //cell.imageView!.image = UIImage(named: "Pikachu")
+        cell.imageView!.image = pokemon.foto
         return cell
     }
 
