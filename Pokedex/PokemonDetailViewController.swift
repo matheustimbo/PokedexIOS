@@ -7,18 +7,23 @@
 //
 
 import UIKit
-
+import Alamofire
+import AlamofireImage
+ 
  class PokemonDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        <#code#>
+        return pokeTypes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        <#code#>
+        let cell = tableView.dequeueReusableCell(withIdentifier: "poketype_cell", for: indexPath)
+        cell.textLabel?.text = pokeTypes[indexPath.row]
+        return cell
     }
     
-
+    @IBOutlet weak var pokeimage: UIImageView!
+    
     @IBOutlet weak var pokemonName: UILabel!
     
     var url: String?
@@ -43,13 +48,17 @@ import UIKit
             }
 
 
-            guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String: Any] else {
+            guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String:    Any] else {
                 print("Not containing JSON")
                 return
             }
 
+            print("a")
 
-            let pokemonName = json["name"] as! String
+            let pokemonNameValue = json["name"] as! String
+            
+//            let sprites = json["sprites"] as! [String: String]
+            
             
             
             
@@ -58,11 +67,27 @@ import UIKit
                 self.pokeTypes.append(type["type"]?["name"] as! String)
             }
             
+        
+            
 
             DispatchQueue.main.async {
-                //self.tableView.reloadData()
+                
+                if let sprites = json["sprites"] as? [String: String?] {
+                    print(sprites["front_default"]!!)
+                    Alamofire.request(sprites["front_default"]!!).responseImage { response in
+                        if let image = response.result.value {
+                            print("image downloaded: \(image)")
+                            self.pokeimage.image = image
+                        }
+                    }
+                }
+                
+                
+                print("name")
+                print(pokemonNameValue)
+                
                 self.types.reloadData()
-                self.pokemonName.text = pokemonName
+                self.pokemonName.text = pokemonNameValue
             }
             
             /*if let nextUrl = json["next"] as? String {
