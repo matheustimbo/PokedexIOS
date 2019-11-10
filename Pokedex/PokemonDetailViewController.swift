@@ -89,17 +89,6 @@ import AlamofireImage
                 self.pokemonName.text = pokemonNameValue
             }
             
-            /*if let nextUrl = json["next"] as? String {
-                 // There is a nextUrl
-                self.parseJSON(url: nextUrl)
-            }
-            else if let nextUrl = json["next"] as? NSNull {
-                 // There is nextUrl but Null
-                
-            }
-            else {
-                // No nextUrl
-            }*/
 
         }
 

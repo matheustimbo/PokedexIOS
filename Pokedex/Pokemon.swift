@@ -15,12 +15,14 @@ class Pokemon: NSObject {
     var tipos: Array<String>
     var movimentos: Array<String>
     var foto: UIImage
+    var purePokemonName:String
     
-    init(nome:String, fotoUrl:String, tipos:Array<String>, movimentos:Array<String> ) {
+    init(nome:String, fotoUrl:String, tipos:Array<String>, movimentos:Array<String>, purePokemonName:String) {
         self.nome = nome
         self.fotoUrl = fotoUrl
         self.foto = UIImage()
         self.tipos = tipos
         self.movimentos = movimentos
+        self.purePokemonName = purePokemonName
     }
 }

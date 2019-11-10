@@ -74,7 +74,7 @@ class PokemonTableViewController: UITableViewController {
                 }
                 let purePokemonName = pokemon["name"] as! String
                 let composedPokemonName = indexString + " " + purePokemonName
-                let pokemonAux = Pokemon(nome: composedPokemonName, fotoUrl: pokemon["url"] as! String, tipos: [""], movimentos: [""])
+                let pokemonAux = Pokemon(nome: composedPokemonName, fotoUrl: pokemon["url"] as! String, tipos: [""], movimentos: [""], purePokemonName: purePokemonName)
                 
                 self.pokemonList.append(pokemonAux)
                 self.pokemonIndex+=1
@@ -233,7 +233,7 @@ class PokemonTableViewController: UITableViewController {
             }*/
             let dvc = segue.destination as! PokemonDetailViewController
             let cellIndex = self.tableView.indexPathForSelectedRow
-            let pokemonName:String = pokemonList[cellIndex!.row].nome
+            let pokemonName:String = pokemonList[cellIndex!.row].purePokemonName
             dvc.url = "https://pokeapi.co/api/v2/pokemon/" + pokemonName
         }
     }
