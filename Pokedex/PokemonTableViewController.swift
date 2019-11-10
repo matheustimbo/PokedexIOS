@@ -14,6 +14,9 @@ class PokemonTableViewController: UITableViewController {
     
     var pokemonList = Array<Pokemon>()
     var pokemonDataArray = Array<String>()
+    var pokemonIndex = 0
+    var loadingData = false
+    var nextUrl = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +35,7 @@ class PokemonTableViewController: UITableViewController {
     }
     
     func parseJSON (url:String) {
-            
+        self.loadingData = true
         let url = URL(string: url)
         let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
 
@@ -52,21 +55,38 @@ class PokemonTableViewController: UITableViewController {
                 return
             }
 
-
+            print("results")
             print(json["results"])
             
             let pokemons = json["results"] as? [[String: AnyObject]]
+            if(json["next"] != nil){
+                self.nextUrl = json["next"] as! String
+            }
             for pokemon in pokemons!{
-                
-                let pokemonAux = Pokemon(nome: pokemon["name"] as! String, fotoUrl: pokemon["url"] as! String, tipos: [""], movimentos: [""])
+                var indexString:String;
+                if(self.pokemonIndex<10){
+                    indexString = "#00" + String(self.pokemonIndex) + " -"
+                }else
+                    if(self.pokemonIndex<100){
+                        indexString = "#0" + String(self.pokemonIndex) + " -"
+                    }else{
+                        indexString = "#" + String(self.pokemonIndex) + " -"
+                }
+                let purePokemonName = pokemon["name"] as! String
+                let composedPokemonName = indexString + " " + purePokemonName
+                let pokemonAux = Pokemon(nome: composedPokemonName, fotoUrl: pokemon["url"] as! String, tipos: [""], movimentos: [""])
                 
                 self.pokemonList.append(pokemonAux)
+                self.pokemonIndex+=1
             }
             
 
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.setPokemonsImages();
+                self.loadingData = false
+                print("next")
+                print(self.nextUrl)
             }
             
             /*if let nextUrl = json["next"] as? String {
@@ -132,6 +152,18 @@ class PokemonTableViewController: UITableViewController {
             task.resume()
         }
         
+    }
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let height = scrollView.frame.size.height
+        let contentYoffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+        if distanceFromBottom < height {
+            print(" you reached end of the table")
+            if(self.loadingData == false && self.nextUrl != ""){
+                parseJSON(url: self.nextUrl)
+            }
+        }
     }
 
     
