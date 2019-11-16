@@ -19,6 +19,7 @@ import AlamofireImage
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "poketype_cell", for: indexPath)
         cell.textLabel?.text = pokeTypes[indexPath.row]
+        cell.imageView!.image = Image(named: pokeTypes[indexPath.row]+".png")
         return cell
     }
     

@@ -14,7 +14,7 @@ class PokemonTableViewController: UITableViewController {
     
     var pokemonList = Array<Pokemon>()
     var pokemonDataArray = Array<String>()
-    var pokemonIndex = 0
+    var pokemonIndex = 1
     var loadingData = false
     var nextUrl = ""
     
