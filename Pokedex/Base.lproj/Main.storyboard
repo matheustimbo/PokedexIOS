@@ -69,11 +69,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="r9e-Te-Cu4">
-                                <rect key="frame" x="197" y="170" width="197" height="105"/>
+                                <rect key="frame" x="197" y="170" width="197" height="171"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="poketype_cell" id="kNO-QH-RYQ">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="poketype_cell" id="kNO-QH-RYQ">
                                         <rect key="frame" x="0.0" y="28" width="197" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kNO-QH-RYQ" id="htg-zp-bAc">
@@ -109,6 +109,7 @@
                         <outlet property="pokeimage" destination="mkk-Nr-8NV" id="zgJ-yX-KID"/>
                         <outlet property="pokemonName" destination="SAs-r8-ENr" id="Nib-HF-dbW"/>
                         <outlet property="types" destination="r9e-Te-Cu4" id="Buu-3D-RIO"/>
+                        <outlet property="typesTable" destination="r9e-Te-Cu4" id="N7N-iL-ycQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C1g-wI-QQx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

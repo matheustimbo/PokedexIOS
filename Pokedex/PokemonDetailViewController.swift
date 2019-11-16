@@ -12,6 +12,8 @@ import AlamofireImage
  
  class PokemonDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var typesTable: UITableView!
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return pokeTypes.count
     }
@@ -99,6 +101,7 @@ import AlamofireImage
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.typesTable.separatorStyle = UITableViewCell.SeparatorStyle.none
         if let url = self.url{
             
             parseJSON(url: url)

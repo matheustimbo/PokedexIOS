@@ -10,13 +10,39 @@ import UIKit
 import Alamofire
 import AlamofireImage
 
-class PokemonTableViewController: UITableViewController {
+class PokemonTableViewController: UITableViewController, UISearchResultsUpdating {
+    
+    
     
     var pokemonList = Array<Pokemon>()
     var pokemonDataArray = Array<String>()
     var pokemonIndex = 1
     var loadingData = false
     var nextUrl = ""
+    var resultSearchController = UISearchController()
+    var filteredPokemonList = Array<Pokemon>()
+    
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+    self.filteredPokemonList.removeAll(keepingCapacity: false)
+
+        var filteredPokemonListAux = Array<Pokemon>()
+        
+        for pokemon in self.pokemonList{
+            if(pokemon.nome.contains(searchController.searchBar.text!.lowercased())){
+                filteredPokemonListAux.append(pokemon)
+            }
+        }
+        
+            
+        
+        self.filteredPokemonList = filteredPokemonListAux
+
+        self.tableView.reloadData()
+        
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +58,20 @@ class PokemonTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        resultSearchController = ({
+            let controller = UISearchController(searchResultsController: nil)
+            controller.searchResultsUpdater = self
+            controller.dimsBackgroundDuringPresentation = false
+            controller.searchBar.sizeToFit()
+
+            tableView.tableHeaderView = controller.searchBar
+
+            return controller
+        })()
+
+        // Reload the table
+        tableView.reloadData()
     }
     
     func parseJSON (url:String) {
@@ -176,16 +216,33 @@ class PokemonTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.pokemonList.count
+        if  (resultSearchController.isActive) {
+            return self.filteredPokemonList.count
+        } else {
+            return self.pokemonList.count
+        }
+        
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+
         let cell = tableView.dequeueReusableCell(withIdentifier: "minha_celula", for: indexPath)
-        let pokemon = self.pokemonList[indexPath.row]
-        cell.textLabel?.text = pokemon.nome
-        //cell.imageView!.image = UIImage(named: "Pikachu")
-        cell.imageView!.image = pokemon.foto
-        return cell
+        
+        if(resultSearchController.isActive){
+            let pokemon = self.filteredPokemonList[indexPath.row]
+            cell.textLabel?.text = pokemon.nome
+            //cell.imageView!.image = UIImage(named: "Pikachu")
+            cell.imageView!.image = pokemon.foto
+            return cell
+        } else{
+            let pokemon = self.pokemonList[indexPath.row]
+            cell.textLabel?.text = pokemon.nome
+            //cell.imageView!.image = UIImage(named: "Pikachu")
+            cell.imageView!.image = pokemon.foto
+            return cell
+        }
+        
     }
 
     /*
@@ -226,14 +283,17 @@ class PokemonTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "PokemonDetail") {
-            /*let dvc = segue.destination as! ContatoViewController
-            let indexPath = self.tableView.indexPathForSelectedRow
-            if let indexPath = indexPath {
-                dvc.contato = self.contatos[indexPath.row]
-            }*/
+            
             let dvc = segue.destination as! PokemonDetailViewController
             let cellIndex = self.tableView.indexPathForSelectedRow
-            let pokemonName:String = pokemonList[cellIndex!.row].purePokemonName
+            let pokemonName:String
+            
+            if  (resultSearchController.isActive) {
+                pokemonName = filteredPokemonList[cellIndex!.row].purePokemonName
+            } else {
+                pokemonName = pokemonList[cellIndex!.row].purePokemonName
+            }
+            
             dvc.url = "https://pokeapi.co/api/v2/pokemon/" + pokemonName
         }
     }
