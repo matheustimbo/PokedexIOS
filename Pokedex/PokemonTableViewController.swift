@@ -22,6 +22,7 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
     var resultSearchController = UISearchController()
     var filteredPokemonList = Array<Pokemon>()
     
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     func updateSearchResults(for searchController: UISearchController) {
         
@@ -46,18 +47,8 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*let tipos = ["eletrico"]
-        let movimentos = ["mega punch", "choque do trovao"]
-        let Pokemontest = Pokemon(nome: "Pikachu", fotoUrl: "teste", tipos: tipos, movimentos: movimentos)
-        pokemonList.append(Pokemontest)
-        pokemonList.append(Pokemontest)*/
+        self.loadingIndicator.startAnimating()
         parseJSON(url:"https://pokeapi.co/api/v2/pokemon/");
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         resultSearchController = ({
             let controller = UISearchController(searchResultsController: nil)

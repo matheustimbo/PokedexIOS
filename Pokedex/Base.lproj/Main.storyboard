@@ -55,6 +55,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="n25-Ap-eGQ"/>
+                    <connections>
+                        <outlet property="loadingIndicator" destination="8ZT-sf-Cl6" id="gKv-uA-ff0"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RDa-iD-cVW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
