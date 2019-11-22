@@ -14,6 +14,13 @@ import AlamofireImage
     
     @IBOutlet weak var typesTable: UITableView!
     
+    @IBAction func shareButton(_ sender: Any) {
+        let activityVC = UIActivityViewController(activityItems: ["Olha só este \(self.pokemonName.text!)"], applicationActivities: nil)
+        activityVC.popoverPresentationController?.sourceView = self.view
+        
+        self.present(activityVC, animated: true, completion: nil)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return pokeTypes.count
     }
@@ -101,6 +108,7 @@ import AlamofireImage
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.typesTable.backgroundColor = UIColor.clear
         self.typesTable.separatorStyle = UITableViewCell.SeparatorStyle.none
         if let url = self.url{
             

@@ -49,6 +49,7 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
         super.viewDidLoad()
         self.loadingIndicator.startAnimating()
         parseJSON(url:"https://pokeapi.co/api/v2/pokemon/");
+        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         
         resultSearchController = ({
             let controller = UISearchController(searchResultsController: nil)
@@ -86,9 +87,6 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
                 return
             }
 
-            print("results")
-            print(json["results"])
-            
             let pokemons = json["results"] as? [[String: AnyObject]]
             if(json["next"] != nil){
                 self.nextUrl = json["next"] as! String
@@ -115,9 +113,8 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 self.setPokemonsImages();
+                self.setPokemonTypes();
                 self.loadingData = false
-                print("next")
-                print(self.nextUrl)
             }
             
             /*if let nextUrl = json["next"] as? String {
@@ -139,10 +136,45 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
 
     }
     
+    func setPokemonTypes(){
+        print("chegou aqui")
+        for pokemon in self.pokemonList{
+            var urlPokemon = pokemon.fotoUrl
+            let url = URL(string: urlPokemon)
+            let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
+
+                guard error == nil else {
+                    print("returning error")
+                    return
+                }
+
+                guard let content = data else {
+                    print("not returning data")
+                    return
+                }
+
+
+                guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String:    Any] else {
+                    print("Not containing JSON")
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    print("json")
+                    print(json["types"])
+                    if let types = json["types"] as? [String: String?] {
+                        print("tipos ee")
+                        print(types)
+                       
+                    }
+                }
+            }
+            task.resume()
+        }
+    }
+    
     func setPokemonsImages(){
         for pokemon in self.pokemonList{
-            print("teste")
-            print(pokemon.fotoUrl)
             var urlPokemon = pokemon.fotoUrl
             let url = URL(string: urlPokemon)
             let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
@@ -166,7 +198,6 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
                 DispatchQueue.main.async {
                     
                     if let sprites = json["sprites"] as? [String: String?] {
-                        print(sprites["front_default"]!!)
                         Alamofire.request(sprites["front_default"]!!).responseImage { response in
                             if let image = response.result.value {
                                 print("image downloaded: \(image)")
@@ -176,8 +207,6 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
                             }
                         }
                     }
-                    
-                    
                 }
             }
             task.resume()
@@ -215,22 +244,30 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
         
     }
 
+    
+    
+
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "minha_celula", for: indexPath)
-        
         if(resultSearchController.isActive){
             let pokemon = self.filteredPokemonList[indexPath.row]
             cell.textLabel?.text = pokemon.nome
             //cell.imageView!.image = UIImage(named: "Pikachu")
             cell.imageView!.image = pokemon.foto
+            cell.contentView.backgroundColor = UIColor.red
             return cell
         } else{
             let pokemon = self.pokemonList[indexPath.row]
             cell.textLabel?.text = pokemon.nome
             //cell.imageView!.image = UIImage(named: "Pikachu")
             cell.imageView!.image = pokemon.foto
+            cell.contentView.backgroundColor = UIColor.red
+            cell.contentView.backgroundColor = UIColor.init(red: (3/255.0), green: (207/255.0), blue: (252/255.0), alpha: 1)
+           
+            
             return cell
         }
         
