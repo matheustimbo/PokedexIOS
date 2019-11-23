@@ -10,6 +10,35 @@ import UIKit
 import Alamofire
 import AlamofireImage
 
+extension UIColor {
+    convenience init(hexString: String, alpha: CGFloat = 1.0) {
+        let hexString: String = hexString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let scanner = Scanner(string: hexString)
+        if (hexString.hasPrefix("#")) {
+            scanner.scanLocation = 1
+        }
+        var color: UInt32 = 0
+        scanner.scanHexInt32(&color)
+        let mask = 0x000000FF
+        let r = Int(color >> 16) & mask
+        let g = Int(color >> 8) & mask
+        let b = Int(color) & mask
+        let red   = CGFloat(r) / 255.0
+        let green = CGFloat(g) / 255.0
+        let blue  = CGFloat(b) / 255.0
+        self.init(red:red, green:green, blue:blue, alpha:alpha)
+    }
+    func toHexString() -> String {
+        var r:CGFloat = 0
+        var g:CGFloat = 0
+        var b:CGFloat = 0
+        var a:CGFloat = 0
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        return String(format:"#%06x", rgb)
+    }
+}
+
 class PokemonTableViewController: UITableViewController, UISearchResultsUpdating {
     
     
@@ -103,7 +132,7 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
                 }
                 let purePokemonName = pokemon["name"] as! String
                 let composedPokemonName = indexString + " " + purePokemonName
-                let pokemonAux = Pokemon(nome: composedPokemonName, fotoUrl: pokemon["url"] as! String, tipos: [""], movimentos: [""], purePokemonName: purePokemonName)
+                let pokemonAux = Pokemon(nome: composedPokemonName, fotoUrl: pokemon["url"] as! String, tipoPrincipal: "", movimentos: [""], purePokemonName: purePokemonName)
                 
                 self.pokemonList.append(pokemonAux)
                 self.pokemonIndex+=1
@@ -160,13 +189,14 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
                 }
 
                 DispatchQueue.main.async {
-                    print("json")
-                    print(json["types"])
-                    if let types = json["types"] as? [String: String?] {
-                        print("tipos ee")
-                        print(types)
-                       
+                    let test = json["types"] as? [[String: AnyObject]]
+                    var tipoPrincipal = ""
+                    for teste in test! {
+                        tipoPrincipal = teste["type"]!["name"] as! String
                     }
+                    pokemon.tipoPrincipal = tipoPrincipal
+                     self.tableView.reloadData()
+                    
                 }
             }
             task.resume()
@@ -246,33 +276,81 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
 
     
     
-
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "minha_celula", for: indexPath)
+        
         if(resultSearchController.isActive){
             let pokemon = self.filteredPokemonList[indexPath.row]
             cell.textLabel?.text = pokemon.nome
-            //cell.imageView!.image = UIImage(named: "Pikachu")
+            cell.textLabel?.textColor = UIColor(named: "white")
             cell.imageView!.image = pokemon.foto
-            cell.contentView.backgroundColor = UIColor.red
+            cell.contentView.backgroundColor = UIColor(hexString: getBgColor(tipo: pokemon.tipoPrincipal))
             return cell
         } else{
             let pokemon = self.pokemonList[indexPath.row]
             cell.textLabel?.text = pokemon.nome
-            //cell.imageView!.image = UIImage(named: "Pikachu")
+            cell.textLabel?.textColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1.0)
             cell.imageView!.image = pokemon.foto
-            cell.contentView.backgroundColor = UIColor.red
-            cell.contentView.backgroundColor = UIColor.init(red: (3/255.0), green: (207/255.0), blue: (252/255.0), alpha: 1)
+            cell.contentView.backgroundColor = UIColor(hexString: getBgColor(tipo: pokemon.tipoPrincipal))
            
             
             return cell
         }
         
     }
-
+    
+    func teste()->String{
+        return "#1aafe1"
+    }
+    
+    func getBgColor(tipo:String) -> String {
+        print("entrei")
+        print(tipo)
+        switch tipo {
+        case "water":
+            return "#1aafe1"
+        case "fire":
+            return "#b92025"
+        case "grass":
+            return "#54b947"
+        case "ground":
+            return "#78431b"
+        case "rock":
+            return "#8b7f72"
+        case "steel":
+            return "#533e28"
+        case "ice":
+            return "#63cdf6"
+        case "electric":
+            return "#f5b915"
+        case "dragon":
+            return "#46a047"
+        case "ghost":
+            return "#e5e8ea"
+        case "psychic":
+            return "#c03695"
+        case "normal":
+            return "#f58c1f"
+        case "fighting":
+            return "#e8e95f"
+        case "poison":
+            return "#8f191b"
+        case "bug":
+            return "#54b947"
+        case "flying":
+            return "#1487b4"
+        case "dark":
+            return "#920565"
+        case "fairy":
+            return "#f6e494"
+        default:
+            return "#ffffff"
+        }
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
