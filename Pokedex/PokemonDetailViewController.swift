@@ -9,10 +9,25 @@
 import UIKit
 import Alamofire
 import AlamofireImage
+
  
  class PokemonDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var typesTable: UITableView!
+    
+    @IBOutlet weak var labelPeso: UILabel!
+    
+    @IBOutlet weak var labelAltura: UILabel!
+    
+    @IBOutlet weak var labelExperience: UILabel!
+    
+    @IBOutlet weak var labelOrdem: UILabel!
+    
+    @IBOutlet weak var labelID: UILabel!
+    
+    
+    
+    
     
     @IBAction func shareButton(_ sender: Any) {
         let activityVC = UIActivityViewController(activityItems: ["Olha só este \(self.pokemonName.text!)"], applicationActivities: nil)
@@ -76,7 +91,7 @@ import AlamofireImage
             for type in types!{ self.pokeTypes.append(type["type"]?["name"] as! String)
             }
             
-        
+           
             
 
             DispatchQueue.main.async {
@@ -94,6 +109,27 @@ import AlamofireImage
                 
                 print("name")
                 print(pokemonNameValue)
+                
+                 self.labelPeso.text = "Peso:  " + String((json["weight"] as! NSNumber).int32Value) + " kgs"
+                self.labelAltura.text = "Altura:  " + String((json["height"] as! NSNumber).int32Value) + " m"
+                
+                self.labelExperience.text = "Experiencia Base:  " + String((json["base_experience"] as! NSNumber).int32Value) + " xp"
+                
+                self.labelOrdem.text = "Ordem Do Pokemon :  " + String((json["order"] as! NSNumber).int32Value) +  "º"
+                
+                self.labelID.text = "ID:  " + String((json["id"] as! NSNumber).int32Value) + "#"
+                
+                //Metodo de adicionar os moves do MOVE
+                
+                let abilities = json["moves"] as! [[String: Any]]
+                
+                for abilityItem in abilities {
+                    let ability = abilityItem["move"] as! [String:String]
+                    print("\(ability["name"]!)")
+                }
+                
+                //-----------------------------------------------------------
+               
                 
                 self.types.reloadData()
                 self.pokemonName.text = pokemonNameValue
