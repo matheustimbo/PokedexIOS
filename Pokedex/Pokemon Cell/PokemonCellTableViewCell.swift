@@ -10,6 +10,10 @@ import UIKit
 
 class PokemonCellTableViewCell: UITableViewCell {
 
+    
+    @IBOutlet weak var btnFavoritarOutlet: UIButton!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

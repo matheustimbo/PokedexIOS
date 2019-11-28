@@ -32,21 +32,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="separatorColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <activityIndicatorView key="tableFooterView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" id="8ZT-sf-Cl6">
                             <rect key="frame" x="0.0" y="99.5" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </activityIndicatorView>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="minha_celula" id="Qnd-fC-EFI">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="minha_celula" id="Qnd-fC-EFI" customClass="PokemonCellTableViewCell" customModule="Pokedex" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Qnd-fC-EFI" id="iNA-sn-7wG">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eur-Z5-RYC">
+                                            <rect key="frame" x="272" y="6" width="131" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="Favoritar"/>
+                                        </button>
+                                    </subviews>
                                     <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <connections>
+                                    <outlet property="btnFavoritarOutlet" destination="eur-Z5-RYC" id="tqf-Yc-xVM"/>
                                     <segue destination="eBg-Bx-NCB" kind="show" identifier="PokemonDetail" id="k16-8Q-lCd"/>
                                 </connections>
                             </tableViewCell>
@@ -56,14 +65,29 @@
                             <outlet property="delegate" destination="EKv-gR-x2V" id="rTS-Hy-HqH"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="n25-Ap-eGQ"/>
+                    <navigationItem key="navigationItem" id="n25-Ap-eGQ">
+                        <nil key="title"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="u0O-6b-RBu">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="m3N-4f-AsH">
+                                <rect key="frame" x="302" y="7" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="switchFavorite:" destination="EKv-gR-x2V" eventType="touchUpInside" id="Jik-dB-2FS"/>
+                                </connections>
+                            </button>
+                            <connections>
+                                <action selector="switchFavoriteList:" destination="EKv-gR-x2V" id="M9D-RA-Kfk"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="loadingIndicator" destination="8ZT-sf-Cl6" id="gKv-uA-ff0"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RDa-iD-cVW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-103" y="-104"/>
+            <point key="canvasLocation" x="-104.34782608695653" y="-104.46428571428571"/>
         </scene>
         <!--Pokemon Detail-->
         <scene sceneID="LYc-sE-Vhj">
@@ -204,6 +228,13 @@
                                 <color key="tintColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Evolui para" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UDf-3J-kVq">
+                                <rect key="frame" x="61" y="466" width="303" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -224,6 +255,7 @@
                         <outlet property="labelID" destination="ufM-wc-Q1e" id="jPp-2H-tqd"/>
                         <outlet property="labelOrdem" destination="1ja-3p-9y3" id="P3w-pq-eN7"/>
                         <outlet property="labelPeso" destination="sGI-ox-KwT" id="MvU-sU-ANt"/>
+                        <outlet property="evoluiPara" destination="UDf-3J-kVq" id="sD5-g7-FTZ"/>
                         <outlet property="pokeimage" destination="mkk-Nr-8NV" id="zgJ-yX-KID"/>
                         <outlet property="pokemonName" destination="SAs-r8-ENr" id="Nib-HF-dbW"/>
                         <outlet property="types" destination="r9e-Te-Cu4" id="Buu-3D-RIO"/>

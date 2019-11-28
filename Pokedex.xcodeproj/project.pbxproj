@@ -58,7 +58,6 @@
 			isa = PBXGroup;
 			children = (
 				3D4D4AAA2382DB94003163E8 /* PokemonCellTableViewCell.swift */,
-				3D4D4AAB2382DB94003163E8 /* PokemonCellTableViewCell.xib */,
 			);
 			path = "Pokemon Cell";
 			sourceTree = "<group>";
@@ -183,7 +182,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BE0CB72234AB92C00BCFC6D /* LaunchScreen.storyboard in Resources */,
-				3D4D4AAD2382DB94003163E8 /* PokemonCellTableViewCell.xib in Resources */,
 				8BE0CB6F234AB92C00BCFC6D /* Assets.xcassets in Resources */,
 				8BE0CB6D234AB92B00BCFC6D /* Main.storyboard in Resources */,
 			);

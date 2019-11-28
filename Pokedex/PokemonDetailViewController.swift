@@ -15,6 +15,7 @@ import AlamofireImage
     
     @IBOutlet weak var typesTable: UITableView!
     
+    @IBOutlet weak var evoluiPara: UILabel!
     @IBOutlet weak var labelPeso: UILabel!
     
     @IBOutlet weak var labelAltura: UILabel!
@@ -91,8 +92,11 @@ import AlamofireImage
             for type in types!{ self.pokeTypes.append(type["type"]?["name"] as! String)
             }
             
-           
-            
+            print("url da especie")
+            let species = json["species"] as? [String: Any]
+            print(species!["url"] as! String)
+        
+            self.parseSpecies(url: (species!["url"] as! String), pokemonName: pokemonNameValue)
 
             DispatchQueue.main.async {
                 
@@ -141,6 +145,129 @@ import AlamofireImage
         task.resume()
 
     }
+    
+    func parseSpecies(url: String, pokemonName: String){
+        let url = URL(string: url)
+        let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
+
+            guard error == nil else {
+                print("returning error")
+                return
+            }
+
+            guard let content = data else {
+                print("not returning data")
+                return
+            }
+
+
+            guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String:    Any] else {
+                print("Not containing JSON")
+                return
+            }
+
+            print("evolution chain")
+            print(json["evolution_chain"])
+            let evolutionChain = json["evolution_chain"] as? [String: Any]
+            print(evolutionChain!["url"])
+            self.parseEvolutionChain(url: (evolutionChain!["url"] as! String), pokemonName: pokemonName)
+            
+            DispatchQueue.main.async {
+            }
+            
+
+        }
+
+        task.resume()
+    }
+    
+    func parseEvolutionChain(url: String, pokemonName: String){
+        print("kkapdofka")
+        let url = URL(string: url)
+        let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
+
+            guard error == nil else {
+                print("returning error")
+                return
+            }
+
+            guard let content = data else {
+                print("not returning data")
+                return
+            }
+
+
+            guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String:    Any] else {
+                print("Not containing JSON")
+                return
+            }
+            
+            var label = ""
+            print("aaaaa")
+            let chain = json["chain"] as? [String: Any]
+            
+            print(chain!["evolves_to"])
+            print("bbbbb")
+            let species = chain!["species"] as? [String: Any]
+            print("sera")
+            print(species!["name"]) //primeiro da linha evolutiva
+            if(( species!["name"] as! String ) == pokemonName){
+                //ele eh o primeiro
+                let evolvesTo = chain!["evolves_to"] as! [[String:Any]]
+                if(evolvesTo.isEmpty){
+                    label = "Ultimo da linha "
+                } else {
+                    let firstEvolve = evolvesTo[0]["species"] as! [String:Any]
+                    label = "Evolui para " + String(firstEvolve["name"] as! String)
+                }
+            } else{
+                let evolvesTo = chain!["evolves_to"] as! [[String:Any]]
+                let firstEvolve = evolvesTo[0]["species"] as! [String:Any]
+                let next = evolvesTo[0]["evolves_to"] as! [[String:Any]]
+                if (!next.isEmpty){
+                    let nextSpecies = next[0]["species"] as! [String:Any]
+                    let nextSpeciesName = nextSpecies["name"] as! String
+                    if(pokemonName == (firstEvolve["name"] as! String)){
+                        label = "Evolui para " + String(nextSpecies["name"] as! String)
+                    } else {
+                        label = "Ultimo da linha "
+                    }
+                } else {
+                    label = "Ultimo da linha"
+                }
+                
+                
+            }
+            /*let evolvesTo = chain!["evolves_to"] as! [[String:Any]]
+            print("evolves to kk")
+            print(evolvesTo)
+            print("lalala")
+            
+            let firstEvolve = evolvesTo[0]["species"] as! [String:Any]
+            print(firstEvolve["name"])
+            var next = evolvesTo[0]["evolves_to"] as! [[String:Any]]
+            
+            print("next")
+            print(next[0]["species"])
+            if (next.isEmpty){
+                print("next evol")
+                print(next as! String)
+            }*/
+            /*while() do{
+                
+            }*/
+            DispatchQueue.main.async {
+                
+                self.evoluiPara.text = label
+            }
+            
+
+        }
+
+        task.resume()
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

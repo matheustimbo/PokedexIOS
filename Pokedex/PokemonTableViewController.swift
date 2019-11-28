@@ -50,8 +50,18 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
     var nextUrl = ""
     var resultSearchController = UISearchController()
     var filteredPokemonList = Array<Pokemon>()
+    var favoritePokemonList = Array<Pokemon>()
+    var showFavorites = false
     
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    
+
+    @IBAction func switchFavorite(_ sender: UIButton) {
+        self.showFavorites = !self.showFavorites
+        self.loadingIndicator.isHidden = self.showFavorites
+        self.tableView.reloadData()
+    }
+    
     
     func updateSearchResults(for searchController: UISearchController) {
         
@@ -71,11 +81,14 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
 
         self.tableView.reloadData()
         
+        
+        
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.retrieveItems()
         self.loadingIndicator.startAnimating()
         parseJSON(url:"https://pokeapi.co/api/v2/pokemon/");
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
@@ -93,6 +106,23 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
 
         // Reload the table
         tableView.reloadData()
+        
+        
+    }
+    
+    func insertItems()
+        {
+            let data = NSKeyedArchiver.archivedData(withRootObject: self.favoritePokemonList)
+            UserDefaults.standard.set(data, forKey: "favoritesPokemon")
+            self.tableView.reloadData()
+        }
+
+    func retrieveItems()
+    {
+        if let data = UserDefaults.standard.object(forKey: "favoritesPokemon") as? NSData {
+            let _mySavedList = NSKeyedUnarchiver.unarchiveObject(with: data as Data) as! [Pokemon]
+            self.favoritePokemonList = _mySavedList
+        }
     }
     
     func parseJSON (url:String) {
@@ -132,7 +162,7 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
                 }
                 let purePokemonName = pokemon["name"] as! String
                 let composedPokemonName = indexString + " " + purePokemonName
-                let pokemonAux = Pokemon(nome: composedPokemonName, fotoUrl: pokemon["url"] as! String, tipoPrincipal: "", movimentos: [""], purePokemonName: purePokemonName)
+                let pokemonAux = Pokemon(nome: composedPokemonName, fotoUrl: pokemon["url"] as! String, tipoPrincipal: "", purePokemonName: purePokemonName)
                 
                 self.pokemonList.append(pokemonAux)
                 self.pokemonIndex+=1
@@ -144,6 +174,7 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
                 self.setPokemonsImages();
                 self.setPokemonTypes();
                 self.loadingData = false
+                
             }
             
             /*if let nextUrl = json["next"] as? String {
@@ -230,8 +261,6 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
                     if let sprites = json["sprites"] as? [String: String?] {
                         Alamofire.request(sprites["front_default"]!!).responseImage { response in
                             if let image = response.result.value {
-                                print("image downloaded: \(image)")
-                                //self.pokeimage.image = image
                                 pokemon.foto = image
                                 self.tableView.reloadData()
                             }
@@ -251,7 +280,9 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
         if distanceFromBottom < height {
             print(" you reached end of the table")
             if(self.loadingData == false && self.nextUrl != ""){
-                parseJSON(url: self.nextUrl)
+                if(self.showFavorites == false){
+                    parseJSON(url: self.nextUrl)
+                }
             }
         }
     }
@@ -266,6 +297,9 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (self.showFavorites){
+            return self.favoritePokemonList.count
+        } else
         if  (resultSearchController.isActive) {
             return self.filteredPokemonList.count
         } else {
@@ -276,13 +310,78 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
 
     
     
+    @objc func favoritarPokemon(button:UIButton) {
+        print("aaaaa \(button.tag)")
+        let index = button.tag
+        var actualPokemonArray = [Pokemon]()
+        if(self.showFavorites){
+            actualPokemonArray = self.favoritePokemonList
+        } else
+        if(self.resultSearchController.isActive){
+            actualPokemonArray = self.filteredPokemonList
+        }else{
+            actualPokemonArray = self.pokemonList
+        }
+        var pokemonSelecionado = actualPokemonArray[index]
+        if(actualPokemonArray[index].favorito){
+            var index = 0
+            for i in 0...self.favoritePokemonList.count-1{
+                var pokemon = self.favoritePokemonList[i]
+                if(pokemonSelecionado.nome == pokemon.nome){
+                    index = i
+                }
+            }
+            self.favoritePokemonList.remove(at: index)
+        } else{
+            self.favoritePokemonList.append(pokemonSelecionado)
+            
+        }
+        self.tableView.reloadData()
+        self.insertItems()
+        
+    }
+    
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "minha_celula", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "minha_celula", for: indexPath) as! PokemonCellTableViewCell
+        cell.btnFavoritarOutlet.tag = indexPath.row;
+        cell.btnFavoritarOutlet.addTarget(self, action: #selector(favoritarPokemon), for: .touchUpInside)
+        var pokemon:Pokemon
+        var actualPokemonArray = [Pokemon]()
+        if(self.showFavorites){
+            actualPokemonArray = self.favoritePokemonList
+        } else
+        if(self.resultSearchController.isActive){
+            actualPokemonArray = self.filteredPokemonList
+        }else{
+            actualPokemonArray = self.pokemonList
+        }
+        pokemon = actualPokemonArray[indexPath.row]
+        if(isFavorito(pokemonComparado: pokemon)){
+            pokemon.favorito = true
+            cell.btnFavoritarOutlet.titleLabel!.text = "Desfavoritar"
+        } else {
+            pokemon.favorito = false
+            cell.btnFavoritarOutlet.titleLabel!.text = "Favoritar"
+        }
         
+        cell.textLabel?.text = pokemon.nome
+        cell.textLabel?.textColor = UIColor(named: "white")
+        cell.imageView!.image = pokemon.foto
+        cell.contentView.backgroundColor = UIColor(hexString: getBgColor(tipo: pokemon.tipoPrincipal))
+        return cell
+        
+        /*if(self.showFavorites){
+            let pokemon = self.favoritePokemonList[indexPath.row]
+            cell.textLabel?.text = pokemon.nome
+            cell.textLabel?.textColor = UIColor(named: "white")
+            cell.imageView!.image = pokemon.foto
+            cell.contentView.backgroundColor = UIColor(hexString: getBgColor(tipo: pokemon.tipoPrincipal))
+            return cell
+        } else
         if(resultSearchController.isActive){
             let pokemon = self.filteredPokemonList[indexPath.row]
             cell.textLabel?.text = pokemon.nome
@@ -296,11 +395,19 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
             cell.textLabel?.textColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1.0)
             cell.imageView!.image = pokemon.foto
             cell.contentView.backgroundColor = UIColor(hexString: getBgColor(tipo: pokemon.tipoPrincipal))
-           
-            
             return cell
         }
-        
+        */
+    }
+    
+    func isFavorito(pokemonComparado:Pokemon)->Bool{
+        var teste = false
+        for pokemon in self.favoritePokemonList{
+            if(pokemon.nome == pokemonComparado.nome){
+                teste = true
+            }
+        }
+        return teste
     }
     
     func teste()->String{
@@ -308,8 +415,6 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
     }
     
     func getBgColor(tipo:String) -> String {
-        print("entrei")
-        print(tipo)
         switch tipo {
         case "water":
             return "#1aafe1"
@@ -393,7 +498,9 @@ class PokemonTableViewController: UITableViewController, UISearchResultsUpdating
             let dvc = segue.destination as! PokemonDetailViewController
             let cellIndex = self.tableView.indexPathForSelectedRow
             let pokemonName:String
-            
+            if(self.showFavorites){
+                pokemonName = self.favoritePokemonList[cellIndex!.row].purePokemonName
+            } else
             if  (resultSearchController.isActive) {
                 pokemonName = filteredPokemonList[cellIndex!.row].purePokemonName
             } else {
