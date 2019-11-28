@@ -26,6 +26,7 @@ import AlamofireImage
     
     @IBOutlet weak var labelID: UILabel!
     
+    @IBOutlet weak var labelHabilidades: UILabel!
     
     
     
@@ -215,10 +216,10 @@ import AlamofireImage
                 //ele eh o primeiro
                 let evolvesTo = chain!["evolves_to"] as! [[String:Any]]
                 if(evolvesTo.isEmpty){
-                    label = "Ultimo da linha "
+                    label = "Ultimo Evolução  "
                 } else {
                     let firstEvolve = evolvesTo[0]["species"] as! [String:Any]
-                    label = "Evolui para " + String(firstEvolve["name"] as! String)
+                    label = "Proxima Evolução: " + String(firstEvolve["name"] as! String)
                 }
             } else{
                 let evolvesTo = chain!["evolves_to"] as! [[String:Any]]
@@ -228,12 +229,12 @@ import AlamofireImage
                     let nextSpecies = next[0]["species"] as! [String:Any]
                     let nextSpeciesName = nextSpecies["name"] as! String
                     if(pokemonName == (firstEvolve["name"] as! String)){
-                        label = "Evolui para " + String(nextSpecies["name"] as! String)
+                        label = "Proxima Evolução: " + String(nextSpecies["name"] as! String)
                     } else {
-                        label = "Ultimo da linha "
+                        label = "Ultima Evolução "
                     }
                 } else {
-                    label = "Ultimo da linha"
+                    label = "Ultimo Evolução "
                 }
                 
                 

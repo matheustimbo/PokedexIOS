@@ -46,8 +46,9 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eur-Z5-RYC">
-                                            <rect key="frame" x="272" y="6" width="131" height="30"/>
+                                            <rect key="frame" x="212" y="6" width="191" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="Rockwell-BoldItalic" family="Rockwell" pointSize="17"/>
                                             <state key="normal" title="Favoritar"/>
                                         </button>
                                     </subviews>
@@ -71,7 +72,8 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="m3N-4f-AsH">
                                 <rect key="frame" x="302" y="7" width="92" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <fontDescription key="fontDescription" name="Rockwell-BoldItalic" family="Rockwell" pointSize="17"/>
+                                <state key="normal" title="Favoritos"/>
                                 <connections>
                                     <action selector="switchFavorite:" destination="EKv-gR-x2V" eventType="touchUpInside" id="Jik-dB-2FS"/>
                                 </connections>
@@ -126,7 +128,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mkk-Nr-8NV">
-                                <rect key="frame" x="98" y="228" width="227" height="215"/>
+                                <rect key="frame" x="98" y="212" width="227" height="215"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RtZ-AK-51U">
@@ -148,6 +150,10 @@
                                         <rect key="frame" x="0.0" y="-688" width="911" height="1897"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="quadrado" translatesAutoresizingMaskIntoConstraints="NO" id="4e7-ee-ede">
+                                        <rect key="frame" x="-55" y="-154" width="528" height="751"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ORDEM: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ja-3p-9y3">
                                         <rect key="frame" x="56" y="293" width="278" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -156,7 +162,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="sheqelsign.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="HX6-VY-VLs">
-                                        <rect key="frame" x="29" y="285.5" width="22" height="27"/>
+                                        <rect key="frame" x="25" y="286" width="26" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" systemColor="systemBrownColor" red="0.63529411759999999" green="0.51764705879999995" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
@@ -168,7 +174,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="x.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8of-PJ-BGX">
-                                        <rect key="frame" x="29" y="235" width="22" height="24"/>
+                                        <rect key="frame" x="25" y="235" width="26" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
@@ -180,7 +186,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="a.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="euH-X6-8bX">
-                                        <rect key="frame" x="29" y="182" width="22" height="24"/>
+                                        <rect key="frame" x="25" y="182" width="26" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
@@ -199,18 +205,26 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="hexagon.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Ngg-3B-H8B">
-                                        <rect key="frame" x="29" y="76.5" width="21" height="28"/>
+                                        <rect key="frame" x="25" y="77" width="25" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="p.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="iiY-jR-Lee">
-                                        <rect key="frame" x="29" y="125.5" width="22" height="24"/>
+                                        <rect key="frame" x="25" y="126" width="26" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="quadrado" translatesAutoresizingMaskIntoConstraints="NO" id="4e7-ee-ede">
-                                        <rect key="frame" x="-55" y="-154" width="528" height="751"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ATAQUES:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yaX-sC-cR2">
+                                        <rect key="frame" x="56" y="310" width="320" height="93"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="Rockwell-BoldItalic" family="Rockwell" pointSize="19"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="hurricane" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="UR1-bJ-ty5">
+                                        <rect key="frame" x="20" y="333.5" width="28" height="45"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -228,10 +242,10 @@
                                 <color key="tintColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Evolui para" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UDf-3J-kVq">
-                                <rect key="frame" x="61" y="466" width="303" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Evolui Para" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UDf-3J-kVq">
+                                <rect key="frame" x="65" y="421" width="303" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="Rockwell-BoldItalic" family="Rockwell" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -250,12 +264,13 @@
                         <barButtonItem key="backBarButtonItem" title="PokeLista" id="jAB-rN-sSl"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="evoluiPara" destination="UDf-3J-kVq" id="sD5-g7-FTZ"/>
                         <outlet property="labelAltura" destination="gKt-fY-jjO" id="Pvs-4M-gcU"/>
                         <outlet property="labelExperience" destination="y9q-MA-ZsJ" id="enu-tI-eNx"/>
+                        <outlet property="labelHabilidades" destination="yaX-sC-cR2" id="c7P-02-CzT"/>
                         <outlet property="labelID" destination="ufM-wc-Q1e" id="jPp-2H-tqd"/>
                         <outlet property="labelOrdem" destination="1ja-3p-9y3" id="P3w-pq-eN7"/>
                         <outlet property="labelPeso" destination="sGI-ox-KwT" id="MvU-sU-ANt"/>
-                        <outlet property="evoluiPara" destination="UDf-3J-kVq" id="sD5-g7-FTZ"/>
                         <outlet property="pokeimage" destination="mkk-Nr-8NV" id="zgJ-yX-KID"/>
                         <outlet property="pokemonName" destination="SAs-r8-ENr" id="Nib-HF-dbW"/>
                         <outlet property="types" destination="r9e-Te-Cu4" id="Buu-3D-RIO"/>
@@ -272,6 +287,7 @@
         <image name="a.circle.fill" catalog="system" width="64" height="60"/>
         <image name="book.fill" catalog="system" width="64" height="50"/>
         <image name="hexagon.fill" catalog="system" width="64" height="62"/>
+        <image name="hurricane" catalog="system" width="44" height="64"/>
         <image name="p.circle.fill" catalog="system" width="64" height="60"/>
         <image name="quadrado" width="512" height="512"/>
         <image name="sheqelsign.circle.fill" catalog="system" width="64" height="60"/>
