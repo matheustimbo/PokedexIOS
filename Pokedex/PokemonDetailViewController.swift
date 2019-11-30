@@ -28,6 +28,7 @@ import AlamofireImage
     
     @IBOutlet weak var labelHabilidades: UILabel!
     
+    @IBOutlet weak var labelPassivas: UILabel!
     
     
     
@@ -128,11 +129,28 @@ import AlamofireImage
                 
                 let abilities = json["moves"] as! [[String: Any]]
                 
+                var abilitiesText = ""
+                
                 for abilityItem in abilities {
                     let ability = abilityItem["move"] as! [String:String]
                     print("\(ability["name"]!)")
+                   abilitiesText.append(ability["name"]!+"| ") 
                 }
                 
+                self.labelHabilidades.text = abilitiesText
+                
+                
+                let passives = json["abilities"] as! [[String: Any]]
+                
+                var passivesText = ""
+                
+                for passiveItem in passives{
+                    let passive = passiveItem["ability"] as! [String:String]
+                    print("\(passive["name"]!)")
+                    passivesText.append(passive["name"]!+"| ")
+                }
+                
+                self.labelPassivas.text = passivesText
                 //-----------------------------------------------------------
                
                 
@@ -216,7 +234,7 @@ import AlamofireImage
                 //ele eh o primeiro
                 let evolvesTo = chain!["evolves_to"] as! [[String:Any]]
                 if(evolvesTo.isEmpty){
-                    label = "Ultimo Evolução  "
+                    label = "Ultima Evolução  "
                 } else {
                     let firstEvolve = evolvesTo[0]["species"] as! [String:Any]
                     label = "Proxima Evolução: " + String(firstEvolve["name"] as! String)
