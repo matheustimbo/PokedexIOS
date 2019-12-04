@@ -271,6 +271,10 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button" image="instinct"/>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k51-kT-014">
+                                <rect key="frame" x="330" y="359" width="84" height="96"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -294,6 +298,7 @@
                         <outlet property="labelOrdem" destination="1ja-3p-9y3" id="P3w-pq-eN7"/>
                         <outlet property="labelPassivas" destination="5g8-FK-c2V" id="nD3-XP-v4A"/>
                         <outlet property="labelPeso" destination="sGI-ox-KwT" id="MvU-sU-ANt"/>
+                        <outlet property="pokeEvolImage" destination="k51-kT-014" id="1CE-ed-4hH"/>
                         <outlet property="pokeimage" destination="mkk-Nr-8NV" id="zgJ-yX-KID"/>
                         <outlet property="pokemonName" destination="SAs-r8-ENr" id="Nib-HF-dbW"/>
                         <outlet property="types" destination="r9e-Te-Cu4" id="Buu-3D-RIO"/>

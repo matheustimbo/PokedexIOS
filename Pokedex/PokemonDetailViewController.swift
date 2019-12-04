@@ -16,6 +16,7 @@ import AlamofireImage
     @IBOutlet weak var typesTable: UITableView!
     
     @IBOutlet weak var evoluiPara: UILabel!
+    
     @IBOutlet weak var labelPeso: UILabel!
     
     @IBOutlet weak var labelAltura: UILabel!
@@ -51,6 +52,8 @@ import AlamofireImage
     }
     
     @IBOutlet weak var pokeimage: UIImageView!
+    
+    @IBOutlet weak var pokeEvolImage: UIImageView!
     
     @IBOutlet weak var pokemonName: UILabel!
     
@@ -230,6 +233,7 @@ import AlamofireImage
             let species = chain!["species"] as? [String: Any]
             print("sera")
             print(species!["name"]) //primeiro da linha evolutiva
+            var evolName = ""
             if(( species!["name"] as! String ) == pokemonName){
                 //ele eh o primeiro
                 let evolvesTo = chain!["evolves_to"] as! [[String:Any]]
@@ -238,6 +242,7 @@ import AlamofireImage
                 } else {
                     let firstEvolve = evolvesTo[0]["species"] as! [String:Any]
                     label = "Proxima Evolução: " + String(firstEvolve["name"] as! String)
+                    evolName = String(firstEvolve["name"] as! String)
                 }
             } else{
                 let evolvesTo = chain!["evolves_to"] as! [[String:Any]]
@@ -248,6 +253,7 @@ import AlamofireImage
                     let nextSpeciesName = nextSpecies["name"] as! String
                     if(pokemonName == (firstEvolve["name"] as! String)){
                         label = "Proxima Evolução: " + String(nextSpecies["name"] as! String)
+                        evolName =  String(nextSpecies["name"] as! String)
                     } else {
                         label = "Ultima Evolução "
                     }
@@ -256,6 +262,9 @@ import AlamofireImage
                 }
                 
                 
+            }
+            if(evolName != ""){
+                self.getEvolutionImage(evolName: evolName)
             }
             /*let evolvesTo = chain!["evolves_to"] as! [[String:Any]]
             print("evolves to kk")
@@ -287,6 +296,46 @@ import AlamofireImage
     }
     
     
+    func getEvolutionImage(evolName:String){
+        var url = URL(string: "https://pokeapi.co/api/v2/pokemon/" + evolName)
+        let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
+
+            guard error == nil else {
+                print("returning error")
+                return
+            }
+
+            guard let content = data else {
+                print("not returning data")
+                return
+            }
+
+
+            guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String:    Any] else {
+                print("Not containing JSON")
+                return
+            }
+
+            
+            let species = json["species"] as? [String: Any]
+            DispatchQueue.main.async {
+                
+                if let sprites = json["sprites"] as? [String: String?] {
+                    print(sprites["front_default"]!!)
+                    Alamofire.request(sprites["front_default"]!!).responseImage { response in
+                        if let image = response.result.value {
+                            print("image downloaded: \(image)")
+                            self.pokeEvolImage.image = image
+                        }
+                    }
+                }
+            }
+            
+
+        }
+
+        task.resume()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
